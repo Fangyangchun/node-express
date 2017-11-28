@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <label for="user">用户名：</label><input type="text" id='user' /><br>
+    <label for="password">密&nbsp;&nbsp;&nbsp;码：</label><input type="password" id='password' /><br>
+    <button onclick="logining()">登陆</button>
+    <button onclick="resgister()">注册</button>
+</body>
+<script>
+    var user = document.getElementById("user");
+    var password = document.getElementById("password");
+    function logining() {
+       var url = 'http://localhost:8888/user/login';
+       var data = {account: user.value, password: password.value};
+       data = JSON.parse(JSON.stringify(data));
+       post(url, data, function(data) {
+            console.log(data);
+       });
+    }
+    function resgister() {
+
+    }
+    function post(url, options, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(callback) {
+            if(xhr.readyState == 4) {
+                if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+                        callback(xhr.responseText);
+                }else {
+                    alert('request failed!' + xhr.status);
+                    }
+            }
+        }
+        xhr.open('post', url, true);
+        xhr.send(serialize(options));
+    }
+</script>
+</html>
